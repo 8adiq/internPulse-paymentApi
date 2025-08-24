@@ -4,7 +4,7 @@ services:
     env: python
     plan: starter
     buildCommand: pip install -r requirements.txt
-    startCommand: gunicorn payment_api.wsgi:application
+    startCommand: gunicorn payment_api.wsgi:application --bind 0.0.0.0:$PORT --workers 2 --timeout 120
     envVars:
       - key: PYTHON_VERSION
         value: 3.11.0
@@ -14,10 +14,6 @@ services:
         value: False
       - key: ALLOWED_HOSTS
         value: ".onrender.com"
-      - key: DATABASE_URL
-        fromDatabase:
-          name: payment-gateway-db
-          property: connectionString
       - key: PAYSTACK_SECRET_KEY
         sync: false
       - key: PAYSTACK_PUBLIC_KEY
@@ -28,9 +24,3 @@ services:
         value: https://payment-gateway-api.onrender.com
     healthCheckPath: /api/v1/payments/
     autoDeploy: true
-
-databases:
-  - name: payment-gateway-db
-    databaseName: payment_gateway
-    user: payment_gateway_user
-    plan: starter

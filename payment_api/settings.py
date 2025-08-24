@@ -92,6 +92,7 @@ DATABASES = {
     }
 }
 
+# Use PostgreSQL if DATABASE_URL is provided (for future flexibility)
 if os.getenv('DATABASE_URL'):
     import dj_database_url
     DATABASES['default'] = dj_database_url.config(
