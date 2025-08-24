@@ -1,0 +1,36 @@
+services:
+  - type: web
+    name: payment-gateway-api
+    env: python
+    plan: starter
+    buildCommand: pip install -r requirements.txt
+    startCommand: gunicorn payment_api.wsgi:application
+    envVars:
+      - key: PYTHON_VERSION
+        value: 3.11.0
+      - key: DJANGO_SETTINGS_MODULE
+        value: payment_api.settings
+      - key: DEBUG
+        value: False
+      - key: ALLOWED_HOSTS
+        value: ".onrender.com"
+      - key: DATABASE_URL
+        fromDatabase:
+          name: payment-gateway-db
+          property: connectionString
+      - key: PAYSTACK_SECRET_KEY
+        sync: false
+      - key: PAYSTACK_PUBLIC_KEY
+        sync: false
+      - key: PAYSTACK_BASE_URL
+        value: https://api.paystack.co
+      - key: BASE_URL
+        value: https://payment-gateway-api.onrender.com
+    healthCheckPath: /api/v1/payments/
+    autoDeploy: true
+
+databases:
+  - name: payment-gateway-db
+    databaseName: payment_gateway
+    user: payment_gateway_user
+    plan: starter
