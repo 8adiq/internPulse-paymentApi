@@ -3,8 +3,8 @@ services:
     name: payment-gateway-api
     env: python
     plan: starter
-    buildCommand: chmod +x build.sh && ./build.sh
-    startCommand: python manage.py makemigrations && python manage.py migrate && gunicorn payment_api.wsgi:application --bind 0.0.0.0:$PORT --workers 2 --timeout 120
+    buildCommand: pip install -r requirements.txt && python manage.py collectstatic --no-input
+    startCommand: python manage.py migrate && gunicorn payment_api.wsgi:application --bind 0.0.0.0:$PORT --workers 2 --timeout 120
     envVars:
       - key: PYTHON_VERSION
         value: 3.11.0
@@ -20,6 +20,8 @@ services:
         sync: false
       - key: PAYSTACK_PUBLIC_KEY
         sync: false
+      # - key: DATABASE_URL
+      #   sync: false
       - key: PAYSTACK_BASE_URL
         value: https://api.paystack.co
       - key: PAYSTACK_INITIALIZE_URL

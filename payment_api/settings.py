@@ -12,6 +12,7 @@ https://docs.djangoproject.com/en/5.2/ref/settings/
 import os
 from pathlib import Path
 from decouple import config
+import dj_database_url
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -85,29 +86,31 @@ WSGI_APPLICATION = 'payment_api.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/5.2/ref/settings/#databases
 
-DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': BASE_DIR / 'db/db.sqlite3',
+# Use PostgreSQL for production, SQLite for development
+database_url = config('DATABASE_URL', default='')
+if database_url and not DEBUG:
+    try:
+        # Production: Use PostgreSQL from DATABASE_URL
+        DATABASES = {
+            'default': dj_database_url.parse(database_url)
+        }
+    except Exception as e:
+        print(f"Error parsing DATABASE_URL: {e}")
+        print("Falling back to SQLite for development")
+        DATABASES = {
+            'default': {
+                'ENGINE': 'django.db.backends.sqlite3',
+                'NAME': BASE_DIR / 'db.sqlite3',
+            }
+        }
+else:
+    # Development: Use SQLite
+    DATABASES = {
+        'default': {
+            'ENGINE': 'django.db.backends.sqlite3',
+            'NAME': BASE_DIR / 'db.sqlite3',
+        }
     }
-}
-
-# Ensure database directory exists
-import os
-db_dir = BASE_DIR / 'db'
-os.makedirs(db_dir, exist_ok=True)
-
-# For Render deployment, use project root for database
-if os.getenv('RENDER'):
-    DATABASES['default']['NAME'] = BASE_DIR / 'payment_api.db'
-
-# Use PostgreSQL if DATABASE_URL is provided (for future flexibility)
-if os.getenv('DATABASE_URL'):
-    import dj_database_url
-    DATABASES['default'] = dj_database_url.config(
-        default=os.getenv('DATABASE_URL'),
-        conn_max_age=600
-    )
 
 
 # Password validation
