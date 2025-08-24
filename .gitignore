@@ -333,3 +333,10 @@ settings_local.py
 # Backup configuration
 config_backup.py
 settings_backup.py
+
+
+
+build.sh
+conftest.py
+test_api.py
+performance_tests
