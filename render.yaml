@@ -3,8 +3,8 @@ services:
     name: payment-gateway-api
     env: python
     plan: starter
-    buildCommand: pip install -r requirements.txt && python manage.py makemigrations && python manage.py migrate && python manage.py collectstatic --no-input && ls -la && ls -la db.sqlite3
-    startCommand: gunicorn payment_api.wsgi:application --bind 0.0.0.0:$PORT --workers 2 --timeout 120
+    buildCommand: pip install -r requirements.txt && python manage.py makemigrations && python manage.py migrate && python manage.py collectstatic --no-input && ls -la /tmp/
+    startCommand: python manage.py migrate && gunicorn payment_api.wsgi:application --bind 0.0.0.0:$PORT --workers 2 --timeout 120
     envVars:
       - key: PYTHON_VERSION
         value: 3.11.0

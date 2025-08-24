@@ -97,9 +97,9 @@ import os
 db_dir = BASE_DIR / 'db'
 os.makedirs(db_dir, exist_ok=True)
 
-# For Render deployment, use project root for database
+# For Render deployment, use a writable location
 if os.getenv('RENDER'):
-    DATABASES['default']['NAME'] = BASE_DIR / 'db.sqlite3'
+    DATABASES['default']['NAME'] = '/tmp/payment_api.db'
 
 # Use PostgreSQL if DATABASE_URL is provided (for future flexibility)
 if os.getenv('DATABASE_URL'):
