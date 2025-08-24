@@ -92,6 +92,11 @@ DATABASES = {
     }
 }
 
+# Ensure database directory exists
+import os
+db_dir = BASE_DIR / 'db'
+os.makedirs(db_dir, exist_ok=True)
+
 # Use PostgreSQL if DATABASE_URL is provided (for future flexibility)
 if os.getenv('DATABASE_URL'):
     import dj_database_url
