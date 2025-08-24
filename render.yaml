@@ -3,7 +3,7 @@ services:
     name: payment-gateway-api
     env: python
     plan: starter
-    buildCommand: pip install -r requirements.txt && mkdir -p db && python manage.py makemigrations && python manage.py migrate && python manage.py collectstatic --no-input
+    buildCommand: pip install -r requirements.txt && python manage.py makemigrations payments && python manage.py migrate payments && python manage.py migrate && python manage.py collectstatic --no-input
     startCommand: gunicorn payment_api.wsgi:application --bind 0.0.0.0:$PORT --workers 2 --timeout 120
     envVars:
       - key: PYTHON_VERSION
@@ -12,6 +12,8 @@ services:
         value: payment_api.settings
       - key: DEBUG
         value: False
+      - key: RENDER
+        value: true
       - key: ALLOWED_HOSTS
         value: ".onrender.com"
       - key: PAYSTACK_SECRET_KEY
