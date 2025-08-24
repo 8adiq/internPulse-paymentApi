@@ -3,7 +3,7 @@ services:
     name: payment-gateway-api
     env: python
     plan: starter
-    buildCommand: pip install -r requirements.txt && mkdir -p db && ls -la && python manage.py migrate --run-syncdb && ls -la db/ && python manage.py collectstatic --no-input
+    buildCommand: pip install -r requirements.txt && mkdir -p db && python manage.py makemigrations && python manage.py migrate && python manage.py collectstatic --no-input
     startCommand: gunicorn payment_api.wsgi:application --bind 0.0.0.0:$PORT --workers 2 --timeout 120
     envVars:
       - key: PYTHON_VERSION
