@@ -88,27 +88,17 @@ WSGI_APPLICATION = 'payment_api.wsgi.application'
 
 # Use PostgreSQL for production, SQLite for development
 database_url = config('DATABASE_URL', default='')
-if database_url and not DEBUG:
-    try:
-        # Production: Use PostgreSQL from DATABASE_URL
-        DATABASES = {
-            'default': dj_database_url.parse(database_url)
-        }
-    except Exception as e:
-        print(f"Error parsing DATABASE_URL: {e}")
-        print("Falling back to SQLite for development")
-        DATABASES = {
-            'default': {
-                'ENGINE': 'django.db.backends.sqlite3',
-                'NAME': BASE_DIR / 'db.sqlite3',
-            }
-        }
+if database_url:
+    # Production: Use PostgreSQL from DATABASE_URL
+    DATABASES = {
+        'default': dj_database_url.parse(database_url)
+    }
 else:
     # Development: Use SQLite
     DATABASES = {
         'default': {
             'ENGINE': 'django.db.backends.sqlite3',
-            'NAME': BASE_DIR / 'db.sqlite3' if DEBUG else '/tmp/db.sqlite3',
+            'NAME': BASE_DIR / 'db.sqlite3',
         }
     }
 
