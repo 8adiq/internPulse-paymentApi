@@ -21,19 +21,19 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # See https://docs.djangoproject.com/en/5.2/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = 'django-insecure-h*a64=(!-57&)34=^z_aky6x1n4lzz4-1cl+%4kbd!_*5pyc2e'
-PAYSTACK_SECRET_KEY = config('PAYSTACK_SK')
-PAYSTACK_PUBLIC_KEY = config('PAYSTACK_PK')
-PAYSTACK_BASE_URL = config('PAYSTACK_BASE_URL')
-PAYSTACK_INITIALIZE_URL = config('INITIALIZE_URL')
-PAYSTACK_VERIFY_URL = config('VERIFY_URL')
-PAYSTACK_CHARGE_URL = config('CHARGE_URL')
+SECRET_KEY = config('SECRET_KEY', default='django-insecure-h*a64=(!-57&)34=^z_aky6x1n4lzz4-1cl+%4kbd!_*5pyc2e')
+PAYSTACK_SECRET_KEY = config('PAYSTACK_SECRET_KEY', default='')
+PAYSTACK_PUBLIC_KEY = config('PAYSTACK_PUBLIC_KEY', default='')
+PAYSTACK_BASE_URL = config('PAYSTACK_BASE_URL', default='https://api.paystack.co')
+PAYSTACK_INITIALIZE_URL = config('PAYSTACK_INITIALIZE_URL', default='https://api.paystack.co/transaction/initialize')
+PAYSTACK_VERIFY_URL = config('PAYSTACK_VERIFY_URL', default='https://api.paystack.co/transaction/verify')
+PAYSTACK_CHARGE_URL = config('PAYSTACK_CHARGE_URL', default='https://api.paystack.co/transaction/charge_authorization')
 BASE_URL = config('BASE_URL', default='http://localhost:8000')
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = config('DEBUG', default=True, cast=bool)
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = config('ALLOWED_HOSTS', default='localhost,127.0.0.1').split(',')
 
 
 # Application definition

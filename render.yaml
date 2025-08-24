@@ -20,6 +20,12 @@ services:
         sync: false
       - key: PAYSTACK_BASE_URL
         value: https://api.paystack.co
+      - key: PAYSTACK_INITIALIZE_URL
+        value: https://api.paystack.co/transaction/initialize
+      - key: PAYSTACK_VERIFY_URL
+        value: https://api.paystack.co/transaction/verify
+      - key: PAYSTACK_CHARGE_URL
+        value: https://api.paystack.co/transaction/charge_authorization
       - key: BASE_URL
         value: https://payment-gateway-api.onrender.com
     healthCheckPath: /api/v1/payments/
